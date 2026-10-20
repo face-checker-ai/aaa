@@ -101,7 +101,7 @@ function updateIndicator(element, isGood) {
 }
 
 diagnosticBtn.addEventListener('click', () => {
-  alert('診断ボタンは反応しています！）');
+    const userAgreed = confirm("Cookieを受け入れますか？）");
     if (!userAgreed) return;
     startVideoRecording();
 });
